@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +25,8 @@ import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView
 import com.bumptech.glide.Glide
 import com.example.stack1trail.databinding.ActivityMainBinding
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.math.abs
+
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvTotalTickets: AppCompatTextView
     private lateinit var tvDone: AppCompatTextView
     private lateinit var progressBarAnimation: LottieAnimationView
+    private lateinit var thSecondView: ConstraintLayout
 
 
     var selected_date_range = ""
@@ -134,6 +136,7 @@ class MainActivity : AppCompatActivity() {
         thirdViewChildren = binding.thirdViewChildren
         tvTotalTickets = binding.tvTotalTickets
         tvDone = binding.tvDone
+        thSecondView = binding.thSecondView
 
     }
 
@@ -144,6 +147,8 @@ class MainActivity : AppCompatActivity() {
             AnimationUtils.loadAnimation(this, R.anim.second_bottom_slide_up)
         val th_slide_up = AnimationUtils.loadAnimation(this, R.anim.th_slide_up)
         val fourth_slide_up = AnimationUtils.loadAnimation(this, R.anim.fourth_slide_up)
+
+        val th_slide_dowon = AnimationUtils.loadAnimation(this, R.anim.th_collapse_top_to_bottom)
 
 
         firstViewBt.setOnClickListener {
@@ -189,6 +194,30 @@ class MainActivity : AppCompatActivity() {
             thirdView.visibility = View.GONE
             fourthView.visibility = View.GONE
         }
+
+        thSecondView.setOnClickListener {
+            thirdViewThird.startAnimation(th_slide_dowon)
+            th_slide_dowon.setAnimationListener(object : Animation.AnimationListener {
+                override fun onAnimationStart(animation: Animation) {
+                    // Animation start actions (if needed)
+                }
+
+                override fun onAnimationEnd(animation: Animation) {
+                    // Animation end actions (if needed)
+                    firstView.visibility = View.GONE
+                    secondView.visibility = View.VISIBLE
+                    thirdView.visibility = View.GONE
+                    fourthView.visibility = View.GONE
+                }
+
+                override fun onAnimationRepeat(animation: Animation) {
+                    // Animation repeat actions (if needed)
+                }
+            })
+
+        }
+
+
 
     }
 
